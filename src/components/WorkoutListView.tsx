@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, ListGroup, Button, Modal, Form } from 'react-bootstrap';
 import { Play, Trash2, Edit, Save, X } from 'lucide-react';
+import { useModelService } from '../hooks/useModelService';
+import type { Exercise, SavedWorkout } from '../services/ModelService';
 
-interface Exercise {
-  id: number;
-  name: string;
-  description: string;
-  animationType: string;
-}
-
-interface SavedWorkout {
-  id: number;
-  name: string;
-  exercises: Exercise[];
-}
-
-interface WorkoutListViewProps {
-  onStartWorkout: (exercises: Exercise[]) => void;
-}
-
-const WorkoutListView: React.FC<WorkoutListViewProps> = ({ onStartWorkout }) => {
+const WorkoutListView: React.FC = () => {
+  const { service } = useModelService();
   const [savedWorkouts, setSavedWorkouts] = useState<SavedWorkout[]>([]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [workoutName, setWorkoutName] = useState('');
@@ -119,7 +105,7 @@ const WorkoutListView: React.FC<WorkoutListViewProps> = ({ onStartWorkout }) => 
                   <Button 
                     variant="outline-success" 
                     size="sm"
-                    onClick={() => onStartWorkout(workout.exercises)}
+                    onClick={() => service.handleStartWorkout(workout.exercises)}
                   >
                     <Play size={14} />
                   </Button>

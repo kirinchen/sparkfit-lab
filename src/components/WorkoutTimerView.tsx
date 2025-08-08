@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, ListGroup } from 'react-bootstrap';
 import { Play, Pause, RotateCcw, ArrowLeft } from 'lucide-react';
-
-interface Exercise {
-  id: number;
-  name: string;
-  description: string;
-  animationType: string;
-}
+import type { Exercise } from '../services/ModelService';
 
 interface WorkoutTimerViewProps {
   exercises: Exercise[];

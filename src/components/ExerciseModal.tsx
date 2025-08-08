@@ -1,13 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
-
-interface Exercise {
-  id: number;
-  name: string;
-  description: string;
-  animationType: string;
-}
+import type { Exercise } from '../services/ModelService';
 
 interface ExerciseModalProps {
   show: boolean;
