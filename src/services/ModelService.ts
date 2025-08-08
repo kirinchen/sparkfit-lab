@@ -84,7 +84,7 @@ class ModelService {
     this.notify();
   }
 
-  // 取得選中的運動
+  // 取得選中的運動（如果為空則返回空陣列）
   public getSelectedExercises(): Exercise[] {
     return this.selectedExercises;
   }
@@ -117,6 +117,27 @@ class ModelService {
     this.notify();
   }
 
+  // 添加運動到選中清單
+  public addToSelectedExercises(exercise: Exercise) {
+    // 檢查是否已經存在
+    if (!this.selectedExercises.find(e => e.id === exercise.id)) {
+      this.selectedExercises = [...this.selectedExercises, exercise];
+      this.notify();
+    }
+  }
+
+  // 從選中清單移除運動
+  public removeFromSelectedExercises(exerciseId: number) {
+    this.selectedExercises = this.selectedExercises.filter(e => e.id !== exerciseId);
+    this.notify();
+  }
+
+  // 清空選中清單
+  public clearSelectedExercises() {
+    this.selectedExercises = [];
+    this.notify();
+  }
+
   // 處理運動點擊
   public handleExerciseClick(exercise: Exercise) {
     this.setSelectedExercise(exercise);
@@ -125,8 +146,8 @@ class ModelService {
 
   // 處理新增運動到訓練清單
   public handleAddToWorkout(exercise: Exercise) {
-    // 這裡可以實現將運動添加到臨時清單的邏輯
-    console.log('Added exercise to workout:', exercise.name);
+    this.addToSelectedExercises(exercise);
+    console.log('Added exercise to selected exercises:', exercise.name);
   }
 
   // 處理開始訓練

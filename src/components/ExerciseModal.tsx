@@ -1,14 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
-import type { Exercise } from '../services/ModelService';
-
-interface ExerciseModalProps {
-  show: boolean;
-  exercise: Exercise | null;
-  onHide: () => void;
-  onAddToWorkout: (exercise: Exercise) => void;
-}
+import { useModelService } from '../hooks/useModelService';
 
 // 火柴人動畫元件
 const StickFigureAnimation: React.FC<{ animationType: string }> = ({ animationType }) => {
@@ -45,18 +38,17 @@ const StickFigureAnimation: React.FC<{ animationType: string }> = ({ animationTy
   );
 };
 
-const ExerciseModal: React.FC<ExerciseModalProps> = ({
-  show,
-  exercise,
-  onHide,
-  onAddToWorkout
-}) => {
+const ExerciseModal: React.FC = () => {
+  const { service } = useModelService();
+  const show = service.getShowExerciseModal();
+  const exercise = service.getSelectedExercise();
+
   if (!exercise) return null;
 
   return (
     <Modal 
       show={show} 
-      onHide={onHide}
+      onHide={() => service.closeExerciseModal()}
       size="lg"
       className="text-white"
     >
@@ -78,14 +70,14 @@ const ExerciseModal: React.FC<ExerciseModalProps> = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="bg-dark-card border-secondary">
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={() => service.closeExerciseModal()}>
           關閉
         </Button>
         <Button 
           variant="cyan-custom" 
           onClick={() => {
-            onAddToWorkout(exercise);
-            onHide();
+            service.handleAddToWorkout(exercise);
+            service.closeExerciseModal();
           }}
         >
           <Plus size={16} className="me-1" />

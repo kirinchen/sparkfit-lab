@@ -19,8 +19,6 @@ function App() {
   // 從 Service 取得當前狀態
   const currentView = service.getCurrentView();
   const selectedExercises = service.getSelectedExercises();
-  const showExerciseModal = service.getShowExerciseModal();
-  const selectedExercise = service.getSelectedExercise();
 
   // 如果當前視圖是運動計時器，則顯示計時器頁面
   if (currentView === 'workout') {
@@ -59,12 +57,7 @@ function App() {
         </Row>
 
         {/* 運動詳情 Modal */}
-        <ExerciseModal
-          show={showExerciseModal}
-          exercise={selectedExercise}
-          onHide={() => service.closeExerciseModal()}
-          onAddToWorkout={(exercise) => service.handleAddToWorkout(exercise)}
-        />
+        <ExerciseModal />
       </Container>
     </div>
   );
