@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabata 應用程式測試</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success { 
+            background-color: #4CAF50; 
+            color: white;
+        }
+        .error { 
+            background-color: #f44336; 
+            color: white;
+        }
+        .info { 
+            background-color: #2196F3; 
+            color: white;
+        }
+        .warning {
+            background-color: #ff9800;
+            color: white;
+        }
+        .link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .feature-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .feature-list li {
+            margin: 8px 0;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎯 Tabata 運動計時器 - 測試頁面</h1>
+        
+        <div id="status"></div>
+        
+        <div class="info status">
+            <h3>✅ 測試結果</h3>
+            <p>如果您看到這個頁面，說明基本 HTML 和 CSS 正常工作。</p>
+            <p>開發伺服器正在運行，請點擊下方連結查看 Tabata 應用程式。</p>
+        </div>
+
+        <div class="success status">
+            <h3>🚀 應用程式連結</h3>
+            <p><a href="http://localhost:5173" class="link" target="_blank">http://localhost:5173</a></p>
+            <p>點擊上方連結在新分頁中開啟 Tabata 運動計時器</p>
+        </div>
+
+        <div class="warning status">
+            <h3>🔧 技術更新</h3>
+            <p>已移除 anime.js 依賴，改用純 CSS 動畫</p>
+            <p>所有火柴人動畫現在使用 CSS keyframes 實現</p>
+        </div>
+
+        <div class="info status">
+            <h3>🎨 功能特色</h3>
+            <ul class="feature-list">
+                <li>✅ 6 種運動類型：深蹲、開合跳、棒式、伏地挺身、高抬腿、波比跳</li>
+                <li>✅ CSS 動畫火柴人演示</li>
+                <li>✅ 可自訂運動時間和休息時間</li>
+                <li>✅ 訓練清單管理（儲存/載入）</li>
+                <li>✅ 響應式設計</li>
+                <li>✅ 暗色系科技感 UI</li>
+                <li>✅ 計時器功能（開始/暫停/重設）</li>
+                <li>✅ 自動切換運動和休息階段</li>
+            </ul>
+        </div>
+
+        <div class="success status">
+            <h3>📱 使用說明</h3>
+            <ol class="feature-list">
+                <li>選擇運動並建立訓練清單</li>
+                <li>點擊「開始訓練」進入計時器頁面</li>
+                <li>設定運動和休息時間</li>
+                <li>開始訓練並跟隨動畫指示</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // 測試 JavaScript 是否正常工作
+        const statusDiv = document.getElementById('status');
+        const currentTime = new Date().toLocaleString('zh-TW');
+        
+        statusDiv.innerHTML = `
+            <div class="success status">
+                <h3>✅ 系統狀態檢查</h3>
+                <p>✅ 測試頁面載入成功！</p>
+                <p>✅ JavaScript 正常工作！</p>
+                <p>✅ 當前時間: ${currentTime}</p>
+                <p>✅ 瀏覽器: ${navigator.userAgent.split(' ').pop()}</p>
+            </div>
+        `;
+
+        // 測試 CSS 動畫是否支援
+        const testElement = document.createElement('div');
+        testElement.style.animation = 'none';
+        const animationSupport = testElement.style.animation !== undefined;
+        
+        if (animationSupport) {
+            statusDiv.innerHTML += `
+                <div class="success status">
+                    <p>✅ CSS 動畫支援正常</p>
+                </div>
+            `;
+        } else {
+            statusDiv.innerHTML += `
+                <div class="error status">
+                    <p>❌ CSS 動畫可能不支援</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

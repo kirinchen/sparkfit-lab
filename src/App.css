@@ -1,38 +1,86 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* 火柴人動畫 */
+@keyframes squat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(20px); }
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes pushups {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+}
+
+@keyframes burpees {
+  0%, 100% { 
+    transform: translateY(0) scale(1); 
   }
-  to {
-    transform: rotate(360deg);
+  25% { 
+    transform: translateY(15px) scale(0.9); 
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  50% { 
+    transform: translateY(30px) scale(0.8); 
+  }
+  75% { 
+    transform: translateY(15px) scale(0.9); 
   }
 }
 
+@keyframes jumpingJacks {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(45deg); }
+}
+
+@keyframes jumpingJacksReverse {
+  0%, 100% { transform: translateX(-100%) rotate(0deg); }
+  50% { transform: translateX(-100%) rotate(-45deg); }
+}
+
+@keyframes highKnees {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-30deg); }
+}
+
+@keyframes highKneesDelayed {
+  0%, 100% { transform: translateX(4px) rotate(0deg); }
+  50% { transform: translateX(4px) rotate(-30deg); }
+}
+
+.animate-squat {
+  animation: squat 1s ease-in-out infinite;
+}
+
+.animate-pushups {
+  animation: pushups 1.2s ease-in-out infinite;
+}
+
+.animate-burpees {
+  animation: burpees 1.5s ease-in-out infinite;
+}
+
+.animate-jumping-jacks {
+  animation: jumpingJacks 0.8s ease-in-out infinite;
+}
+
+.animate-jumping-jacks-reverse {
+  animation: jumpingJacksReverse 0.8s ease-in-out infinite;
+}
+
+.animate-high-knees {
+  animation: highKnees 0.6s ease-in-out infinite;
+}
+
+.animate-high-knees-delayed {
+  animation: highKneesDelayed 0.6s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+/* 保留一些可能有用的樣式 */
 .card {
   padding: 2em;
 }
