@@ -18,8 +18,7 @@ function App() {
 
   // 從 Service 取得當前狀態
   const currentView = service.getCurrentView();
-  const selectedExercises = service.getSelectedExercises();
-
+  const selectedExercises = service.selectedWorkout.exercises;
   // 如果當前視圖是運動計時器，則顯示計時器頁面
   if (currentView === 'workout') {
     return <WorkoutTimerView exercises={selectedExercises} onBack={() => service.handleBackToSelection()} />;

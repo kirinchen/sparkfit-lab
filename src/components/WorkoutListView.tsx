@@ -2,7 +2,7 @@ import { ChevronDown, Edit, Play, Plus, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button, Card, Dropdown, Form, ListGroup, Modal } from 'react-bootstrap';
 import { useModelService } from '../hooks/useModelService';
-import type { SavedWorkout } from '../services/ModelService';
+import type { SavedWorkout } from "../model/Models";
 
 const WorkoutListView: React.FC = () => {
   const { service } = useModelService();
@@ -50,7 +50,7 @@ const WorkoutListView: React.FC = () => {
 const handleCloseModal = () => {
   setShowAddModal(false);
   setWorkoutName('');
-  service.clearSelectedExercises();
+  service.delSelectedWorkout();
 };
 
 const onEditOrAdd = (edit:boolean)=>{
@@ -98,7 +98,7 @@ return (
           variant="outline-danger"
           size="sm"
           onClick={() => {
-            service.clearSelectedExercises();
+            service.delSelectedWorkout();
           }}
         >
           <Trash2 size={14} />

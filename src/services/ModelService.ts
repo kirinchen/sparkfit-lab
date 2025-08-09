@@ -1,16 +1,6 @@
-// 定義類型
-export interface Exercise {
-  id: number;
-  name: string;
-  description: string;
-  animationType: string;
-}
-
-export interface SavedWorkout {
-  selected: boolean;
-  name: string;
-  exercises: Exercise[];
-}
+import type { Exercise } from "../model/Models";
+import type { SavedWorkout } from "../model/Models";
+import { CommUtils } from "../utils/CommUtils";
 
 export type ViewType = 'selection' | 'workout';
 
@@ -27,15 +17,7 @@ class ModelService {
   private selectedExercise: Exercise | null = null;
   private _savedWorkouts: SavedWorkout[] = [];
 
-  // 運動資料結構
-  private exercisesData: Exercise[] = [
-    { id: 1, name: '深蹲', description: '雙腳與肩同寬，核心收緊，臀部像坐椅子一樣向下坐，然後回到起始位置。', animationType: 'squat' },
-    { id: 2, name: '開合跳', description: '雙腳併攏站立，雙臂放在身體兩側。跳躍時雙腳向外張開，同時雙臂舉過頭頂。', animationType: 'jumpingJacks' },
-    { id: 3, name: '棒式', description: '以手肘和腳尖支撐身體，使身體呈一直線，核心用力，保持穩定。', animationType: 'plank' },
-    { id: 4, name: '伏地挺身', description: '雙手略寬於肩，身體呈一直線，彎曲手肘將身體放低，再推回原位。', animationType: 'pushups' },
-    { id: 5, name: '高抬腿', description: '原地跑步，將膝蓋抬高至腰部高度，保持核心穩定。', animationType: 'highKnees' },
-    { id: 6, name: '波比跳', description: '蹲下、手撐地、向後跳、伏地挺身、向前跳、向上跳躍。', animationType: 'burpees' },
-  ];
+
 
   // Singleton 模式：私有化建構子
   private constructor() {
@@ -72,7 +54,11 @@ class ModelService {
   }
 
   public get selectedWorkout(): SavedWorkout  {
-    return this.savedWorkouts.find(w => w.selected) !;
+    const ans = this.savedWorkouts.find(w => w.selected) ;
+    if(ans) return ans;
+    this.savedWorkouts[0].selected = true;
+    return this.savedWorkouts[0];
+
   }
 
 
@@ -119,12 +105,6 @@ class ModelService {
     };
   }
 
-  // --- 公開 API ---
-
-  // 取得運動資料
-  public getExercisesData(): Exercise[] {
-    return this.exercisesData;
-  }
 
   // 取得當前視圖
   public getCurrentView(): ViewType {
@@ -136,8 +116,6 @@ class ModelService {
     this.currentView = view;
     this.notify();
   }
-
-
 
   // 取得運動詳情彈出視窗狀態
   public getShowExerciseModal(): boolean {
@@ -162,23 +140,24 @@ class ModelService {
   }
 
   // 添加運動到選中清單
-  public addToSelectedExercises(exercise: Exercise) {
-    // 檢查是否已經存在
-    if (!this.selectedExercises.find(e => e.id === exercise.id)) {
-      this.selectedExercises = [...this.selectedExercises, exercise];
-      this.notify();
-    }
+  public addToSelectedWorkout(_new: Exercise) {
+    const exercises =  this.selectedWorkout.exercises;
+    const n = CommUtils.clone(_new);
+    n.id = CommUtils.randInt();
+    this.selectedWorkout.exercises =  [...exercises, n];
+    this.saveAndNotify();
   }
 
   // 從選中清單移除運動
   public removeFromSelectedExercises(exerciseId: number) {
-    this.selectedExercises = this.selectedExercises.filter(e => e.id !== exerciseId);
+    const exercises =  this.selectedWorkout.exercises;
+    this.selectedWorkout.exercises = exercises.filter(e => e.id !== exerciseId);
     this.notify();
   }
 
   // 清空選中清單
-  public clearSelectedExercises() {
-    this.selectedExercises = [];
+  public delSelectedWorkout() {
+    this._savedWorkouts = this.savedWorkouts.filter(w=> !w.selected);
     this.notify();
   }
 
@@ -188,22 +167,16 @@ class ModelService {
     this.setShowExerciseModal(true);
   }
 
-  // 處理新增運動到訓練清單
-  public handleAddToWorkout(exercise: Exercise) {
-    this.addToSelectedExercises(exercise);
-    console.log('Added exercise to selected exercises:', exercise.name);
-  }
+
 
   // 處理開始訓練
-  public handleStartWorkout(exercises: Exercise[]) {
-    this.setSelectedExercises(exercises);
+  public handleStartWorkout() {
     this.setCurrentView('workout');
   }
 
   // 處理返回選擇頁面
   public handleBackToSelection() {
     this.setCurrentView('selection');
-    this.setSelectedExercises([]);
   }
 
   // 關閉運動詳情彈出視窗

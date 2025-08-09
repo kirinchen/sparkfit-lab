@@ -2,41 +2,9 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
 import { useModelService } from '../hooks/useModelService';
+import StickFigureAnimationView from './StickFigureAnimationView';
 
-// 火柴人動畫元件
-const StickFigureAnimation: React.FC<{ animationType: string }> = ({ animationType }) => {
-  return (
-    <div className="w-32 h-32 mx-auto relative">
-      {/* 頭部 */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyan-400 rounded-full"></div>
-      
-      {/* 身體 */}
-      <div className={`body absolute top-6 left-1/2 transform -translate-x-1/2 w-1 h-12 bg-cyan-400 ${
-        animationType === 'squat' ? 'animate-squat' :
-        animationType === 'pushups' ? 'animate-pushups' :
-        animationType === 'burpees' ? 'animate-burpees' : ''
-      }`}></div>
-      
-      {/* 手臂 */}
-      <div className={`arm absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-cyan-400 origin-left ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks' : ''
-      }`}></div>
-      <div className={`arm absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-cyan-400 origin-right ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks-reverse' : ''
-      }`} style={{ transform: 'translateX(-100%)' }}></div>
-      
-      {/* 腿部 */}
-      <div className={`leg absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-cyan-400 origin-top ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks' :
-        animationType === 'highKnees' ? 'animate-high-knees' : ''
-      }`}></div>
-      <div className={`leg absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-cyan-400 origin-top ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks-reverse' :
-        animationType === 'highKnees' ? 'animate-high-knees-delayed' : ''
-      }`} style={{ transform: 'translateX(4px)' }}></div>
-    </div>
-  );
-};
+// 火柴人動畫元件改使用獨立的 StickFigureAnimationView
 
 const ExerciseModal: React.FC = () => {
   const { service } = useModelService();
@@ -64,7 +32,7 @@ const ExerciseModal: React.FC = () => {
           <div className="col-md-6">
             <h5 className="text-cyan-custom mb-3">動畫演示</h5>
             <div className="d-flex justify-content-center">
-              <StickFigureAnimation animationType={exercise.animationType} />
+              <StickFigureAnimationView animationType={exercise.animationType} />
             </div>
           </div>
         </div>
@@ -76,7 +44,7 @@ const ExerciseModal: React.FC = () => {
         <Button 
           variant="cyan-custom" 
           onClick={() => {
-            service.handleAddToWorkout(exercise);
+            service.addToSelectedWorkout(exercise);
             service.closeExerciseModal();
           }}
         >
