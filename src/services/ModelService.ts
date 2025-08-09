@@ -7,7 +7,7 @@ export interface Exercise {
 }
 
 export interface SavedWorkout {
-  id: number;
+  selected: boolean;
   name: string;
   exercises: Exercise[];
 }
@@ -23,9 +23,9 @@ class ModelService {
 
   // 核心狀態資料
   private currentView: ViewType = 'selection';
-  private selectedExercises: Exercise[] = [];
   private showExerciseModal: boolean = false;
   private selectedExercise: Exercise | null = null;
+  private _savedWorkouts: SavedWorkout[] = [];
 
   // 運動資料結構
   private exercisesData: Exercise[] = [
@@ -40,6 +40,59 @@ class ModelService {
   // Singleton 模式：私有化建構子
   private constructor() {
     console.log("ModelService Initialized!");
+    this.loadFromLocalStorage();
+  }
+
+  public get savedWorkouts(): SavedWorkout[] {
+    const ans = this._savedWorkouts;
+    if(ans.length === 0){
+      this.addSavedWorkout({
+        name: '我的運動',
+        exercises: [],
+        selected: true
+      });
+    }
+    return ans;
+  }
+
+  public addSavedWorkout(w:SavedWorkout){
+    this._savedWorkouts = [...this._savedWorkouts, w];
+    this.setSelectedWorkout(w.name);
+
+  }
+
+  public setSelectedWorkout(wName:string){
+    this._savedWorkouts = this.savedWorkouts.map(w => ({...w, selected: w.name === wName}));
+    this.saveAndNotify();
+  }
+
+  public saveAndNotify(){
+    this.saveToLocalStorage();
+    this.notify();
+  }
+
+  public get selectedWorkout(): SavedWorkout  {
+    return this.savedWorkouts.find(w => w.selected) !;
+  }
+
+
+  private loadFromLocalStorage() {
+    // 載入已儲存的訓練清單
+    const savedWorkouts = localStorage.getItem('tabataWorkouts');
+    if (savedWorkouts) {
+      try {
+        this._savedWorkouts = JSON.parse(savedWorkouts) as SavedWorkout[];
+        console.log('Loaded saved workouts from localStorage:', this._savedWorkouts);
+      } catch (error) {
+        console.error('Error parsing saved workouts:', error);
+        this._savedWorkouts = [];
+      }
+    }
+  }
+
+  private saveToLocalStorage(){
+    const json = JSON.stringify(this._savedWorkouts);
+    localStorage.setItem('tabataWorkouts', json);
   }
 
   // Singleton 模式：提供靜態方法來取得唯一的實例
@@ -84,16 +137,7 @@ class ModelService {
     this.notify();
   }
 
-  // 取得選中的運動（如果為空則返回空陣列）
-  public getSelectedExercises(): Exercise[] {
-    return this.selectedExercises;
-  }
 
-  // 設定選中的運動
-  public setSelectedExercises(exercises: Exercise[]) {
-    this.selectedExercises = exercises;
-    this.notify();
-  }
 
   // 取得運動詳情彈出視窗狀態
   public getShowExerciseModal(): boolean {
