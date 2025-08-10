@@ -2,9 +2,9 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
 import { useModelService } from '../hooks/useModelService';
-import StickFigureAnimationView from './StickFigureAnimationView';
+import YouTubePlayerView from './StickFigureAnimationView';
 
-// 火柴人動畫元件改使用獨立的 StickFigureAnimationView
+// YouTube 影片播放元件
 
 const ExerciseModal: React.FC = () => {
   const { service } = useModelService();
@@ -32,7 +32,7 @@ const ExerciseModal: React.FC = () => {
           <div className="col-md-6">
             <h5 className="text-cyan-custom mb-3">動畫演示</h5>
             <div className="d-flex justify-content-center">
-              <StickFigureAnimationView animationType={exercise.animationType} />
+              <YouTubePlayerView animationType={exercise.animationType} />
             </div>
           </div>
         </div>
