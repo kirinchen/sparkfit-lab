@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, ListGroup } from 'react-bootstrap';
 import { Play, Pause, RotateCcw, ArrowLeft } from 'lucide-react';
 import type { Exercise } from '../model/Models';
+import startupSound from '../assets/audio/startup.wav';
+import takebreakSound from '../assets/audio/takebreak.wav';
 
 interface WorkoutTimerViewProps {
   exercises: Exercise[];
@@ -52,10 +54,13 @@ const useTimer = (exercises: Exercise[]) => {
   const [workoutTime, setWorkoutTime] = useState(30);
   const [restTime, setRestTime] = useState(10);
   const intervalRef = useRef<number | null>(null);
+  const startupAudio = useRef(new Audio(startupSound));
+  const takebreakAudio = useRef(new Audio(takebreakSound));
 
   const startTimer = () => {
     if (exercises.length === 0) return;
     
+    startupAudio.current.play();
     setIsRunning(true);
     setTimeLeft(workoutTime);
     setIsWorkout(true);
@@ -86,6 +91,7 @@ const useTimer = (exercises: Exercise[]) => {
         if (isWorkout) {
           // 從運動切換到休息
           setIsWorkout(false);
+          takebreakAudio.current.play();
           return restTime;
         } else {
           // 從休息切換到下一個運動
@@ -97,6 +103,7 @@ const useTimer = (exercises: Exercise[]) => {
           }
           setCurrentExerciseIndex(nextIndex);
           setIsWorkout(true);
+          startupAudio.current.play();
           return workoutTime;
         }
       }
