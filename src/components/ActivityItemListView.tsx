@@ -17,7 +17,6 @@ const ActivityItemListView: React.FC = () => {
             <ActivityItemView
               exercise={exercise}
               onExerciseClick={(exercise) => service.handleExerciseClick(exercise)}
-              onStartWorkout={(exercise) => service.handleStartWorkout([exercise])}
             />
           </Col>
         ))}
