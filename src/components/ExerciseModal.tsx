@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Plus } from 'lucide-react';
 import { useModelService } from '../hooks/useModelService';
-import YouTubePlayerView from './StickFigureAnimationView';
+import YouTubePlayerView from './YouTubePlayerView';
 
 // YouTube 影片播放元件
 
@@ -30,7 +30,7 @@ const ExerciseModal: React.FC = () => {
             <p className="text-white">{exercise.description}</p>
           </div>
           <div className="col-md-6">
-            <h5 className="text-cyan-custom mb-3">動畫演示</h5>
+            <h5 className="text-cyan-custom ">動畫演示</h5>
             <div className="d-flex justify-content-center">
               <YouTubePlayerView animationType={exercise.animationType} />
             </div>

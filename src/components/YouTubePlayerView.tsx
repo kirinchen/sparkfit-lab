@@ -14,17 +14,18 @@ const animationToVideoId: Record<string, string> = {
   plank: 'pD3_GgP-dO4',
 };
 
-const YouTubePlayerView: React.FC<{ animationType: Exercise['animationType'] }> = ({ animationType }) => {
+const YouTubePlayerView: React.FC<{ animationType: Exercise['animationType']; muted?: boolean }> = ({ animationType, muted = true }) => {
   const videoId = animationToVideoId[animationType];
 
   const opts = {
-    height: '192',
-    width: '96',
+    width: '100%',
+    height: '100%',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
       loop: 1,
       playlist: videoId, // needed for loop to work
+      mute: muted ? 1 : 0,
     },
   };
 
@@ -34,8 +35,8 @@ const YouTubePlayerView: React.FC<{ animationType: Exercise['animationType'] }> 
 
   return (
     <div
-      className="relative w-24 h-48"
-      style={{ width: 96, height: 192, flex: '0 0 auto' }}
+      className="relative "
+      style={{  }}
     >
       <YouTube videoId={videoId} opts={opts} className="w-full h-full" />
     </div>
