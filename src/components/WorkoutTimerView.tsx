@@ -1,49 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Card, Button, Form, ListGroup } from 'react-bootstrap';
-import { Play, Pause, RotateCcw, ArrowLeft } from 'lucide-react';
-import type { Exercise } from '../model/Models';
+import { ArrowLeft, Pause, Play, RotateCcw } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Card, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import startupSound from '../assets/audio/startup.wav';
 import takebreakSound from '../assets/audio/takebreak.wav';
+import type { Exercise } from '../model/Models';
+import YouTubePlayerView from './YouTubePlayerView';
 
 interface WorkoutTimerViewProps {
   exercises: Exercise[];
   onBack: () => void;
 }
-
-// 火柴人動畫元件
-const StickFigureAnimation: React.FC<{ animationType: string }> = ({ animationType }) => {
-  return (
-    <div className="w-32 h-32 mx-auto relative">
-      {/* 頭部 */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyan-400 rounded-full"></div>
-      
-      {/* 身體 */}
-      <div className={`body absolute top-6 left-1/2 transform -translate-x-1/2 w-1 h-12 bg-cyan-400 ${
-        animationType === 'squat' ? 'animate-squat' :
-        animationType === 'pushups' ? 'animate-pushups' :
-        animationType === 'burpees' ? 'animate-burpees' : ''
-      }`}></div>
-      
-      {/* 手臂 */}
-      <div className={`arm absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-cyan-400 origin-left ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks' : ''
-      }`}></div>
-      <div className={`arm absolute top-8 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-cyan-400 origin-right ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks-reverse' : ''
-      }`} style={{ transform: 'translateX(-100%)' }}></div>
-      
-      {/* 腿部 */}
-      <div className={`leg absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-cyan-400 origin-top ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks' :
-        animationType === 'highKnees' ? 'animate-high-knees' : ''
-      }`}></div>
-      <div className={`leg absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-cyan-400 origin-top ${
-        animationType === 'jumpingJacks' ? 'animate-jumping-jacks-reverse' :
-        animationType === 'highKnees' ? 'animate-high-knees-delayed' : ''
-      }`} style={{ transform: 'translateX(4px)' }}></div>
-    </div>
-  );
-};
 
 // 計時器 Hook
 const useTimer = (exercises: Exercise[]) => {
@@ -201,13 +167,17 @@ const WorkoutTimerView: React.FC<WorkoutTimerViewProps> = ({ exercises, onBack }
 
             {/* 當前運動資訊 */}
             {isWorkout && currentExercise && (
-              <Card className="bg-dark-card text-center mb-4">
+              <Card className="bg-dark-card mb-4">
                 <Card.Body>
-                  <h2 className="text-cyan-custom mb-4">{currentExercise.name}</h2>
-                  <div className="mb-4">
-                    <StickFigureAnimation animationType={currentExercise.animationType} />
+                  <h2 className="text-cyan-custom  text-center">{currentExercise.name}</h2>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <YouTubePlayerView animationType={currentExercise.animationType} />
+                    </div>
+                    <div className="col-md-6">
+                      <p className="text-white">{currentExercise.description}</p>
+                    </div>
                   </div>
-                  <p className="text-white">{currentExercise.description}</p>
                 </Card.Body>
               </Card>
             )}
