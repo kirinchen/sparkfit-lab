@@ -13,6 +13,9 @@ const ActivityItemView: React.FC<ActivityItemViewProps> = ({
   onExerciseClick,
   showClickable = true
 }) => {
+  
+
+
   return (
     <Card 
       className={`bg-dark-card text-white h-100 ${showClickable ? 'cursor-pointer' : ''}`}
@@ -21,10 +24,10 @@ const ActivityItemView: React.FC<ActivityItemViewProps> = ({
     >
       <Card.Body className="d-flex flex-column">
         <Card.Title className="text-cyan-custom">{exercise.name}</Card.Title>
+        {/* {renderDisplayContent()} */}
         <Card.Text className="flex-grow-1">
           {exercise.description}
         </Card.Text>
-
       </Card.Body>
     </Card>
   );

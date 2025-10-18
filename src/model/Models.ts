@@ -10,5 +10,8 @@ export interface Exercise {
   name: string;
   description: string;
   animationType: string;
+  displayType?: string;
+  displayLink?: string;
+  displayImg?: string;
 }
 

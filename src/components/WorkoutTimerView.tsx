@@ -121,6 +121,49 @@ const WorkoutTimerView: React.FC<WorkoutTimerViewProps> = ({ exercises, onBack }
   const currentExercise = exercises[currentExerciseIndex];
   const isCompleted = currentExerciseIndex >= exercises.length;
 
+  const extractYouTubeVideoId = (url: string): string | null => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const renderDisplayContent = () => {
+    const exercise = isWorkout ? currentExercise : exercises[currentExerciseIndex + 1];
+    
+    if (!exercise) return null;
+
+    if (exercise.displayType === 'YouTube' && exercise.displayLink) {
+      // Extract video ID from YouTube URL and use it as animationType
+      const videoId = extractYouTubeVideoId(exercise.displayLink);
+      if (videoId) {
+        return (
+          <div className="mb-3" style={{ height: '200px' }}>
+            <YouTubePlayerView animationType={videoId} muted={true} />
+          </div>
+        );
+      }
+    } else if (exercise.displayImg) {
+      return (
+        <div className="mb-3">
+          <img
+            src={exercise.displayImg}
+            alt={exercise.name}
+            className="img-fluid rounded"
+            style={{ maxHeight: '200px', objectFit: 'cover', width: '100%' }}
+          />
+        </div>
+      );
+    } else if (exercise.animationType) {
+      // Fallback to animationType if no displayType is specified
+      return (
+        <div className="mb-3" style={{ height: '200px' }}>
+          <YouTubePlayerView animationType={exercise.animationType} muted={true} />
+        </div>
+      );
+    }
+    return null;
+  };
+
   useEffect(() => {
     if (exercises.length > 0 && !isCompleted) {
       startTimer();
@@ -166,16 +209,23 @@ const WorkoutTimerView: React.FC<WorkoutTimerViewProps> = ({ exercises, onBack }
             </Card>
 
             {/* 當前運動資訊 */}
-            {isWorkout && currentExercise && (
+            {currentExercise && (
               <Card className="bg-dark-card mb-4">
                 <Card.Body>
-                  <h2 className="text-cyan-custom  text-center">{currentExercise.name}</h2>
+                  <h2 className="text-cyan-custom text-center">
+                    {isWorkout ? currentExercise.name : `下一個: ${exercises[currentExerciseIndex + 1]?.name || '訓練完成'}`}
+                  </h2>
                   <div className="row">
                     <div className="col-md-6">
-                      <YouTubePlayerView animationType={currentExercise.animationType} />
+                      {renderDisplayContent()}
                     </div>
                     <div className="col-md-6">
-                      <p className="text-white">{currentExercise.description}</p>
+                      <p className="text-white">
+                        {isWorkout 
+                          ? currentExercise.description 
+                          : exercises[currentExerciseIndex + 1]?.description || '恭喜完成所有運動！'
+                        }
+                      </p>
                     </div>
                   </div>
                 </Card.Body>
